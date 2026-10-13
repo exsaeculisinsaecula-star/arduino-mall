@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "name": "Arduino Uno R3",
+    "category": "board",
+    "price": 33000,
+    "description": "가장 널리 쓰이는 아두이노 입문 보드. ATmega328P 기반, 14개 디지털 I/O, 6개 아날로그 입력.",
+    "spec": "MCU: ATmega328P / 디지털 I/O: 14개 / 아날로그 입력: 6개 / Flash: 32KB",
+    "image": "images/products/arduino-uno.jpg",
+    "stock": 50,
+    "badge": "best"
+  },
+  {
+    "id": 2,
+    "name": "Arduino Mega 2560",
+    "category": "board",
+    "price": 55000,
+    "description": "대규모 프로젝트에 적합한 고사양 보드. ATmega2560 기반, 54개 디지털 I/O.",
+    "spec": "MCU: ATmega2560 / 디지털 I/O: 54개 / 아날로그 입력: 16개 / Flash: 256KB",
+    "image": "images/products/arduino-mega.jpg",
+    "stock": 30,
+    "badge": ""
+  },
+  {
+    "id": 3,
+    "name": "Arduino Nano",
+    "category": "board",
+    "price": 22000,
+    "description": "소형 프로젝트 및 브레드보드 사용에 최적화된 초소형 보드.",
+    "spec": "MCU: ATmega328P / 크기: 18x45mm / Flash: 32KB",
+    "image": "images/products/arduino-nano.jpg",
+    "stock": 80,
+    "badge": ""
+  },
+  {
+    "id": 4,
+    "name": "DHT11 온습도 센서",
+    "category": "sensor",
+    "price": 3500,
+    "description": "온도와 습도를 측정하는 디지털 센서. 실내 환경 모니터링에 적합.",
+    "spec": "온도 범위: 0~50℃ / 습도 범위: 20~80% / 정확도: ±2℃",
+    "image": "images/products/dht11.jpg",
+    "stock": 200,
+    "badge": ""
+  },
+  {
+    "id": 5,
+    "name": "HC-SR04 초음파 센서",
+    "category": "sensor",
+    "price": 3000,
+    "description": "2cm~400cm 거리 측정이 가능한 초음파 센서. 로봇, 주차 보조 등에 활용.",
+    "spec": "측정 범위: 2~400cm / 정확도: 3mm / 주파수: 40kHz",
+    "image": "images/products/hcsr04.jpg",
+    "stock": 150,
+    "badge": ""
+  },
+  {
+    "id": 6,
+    "name": "PIR 모션 센서",
+    "category": "sensor",
+    "price": 4500,
+    "description": "적외선 감지 기반 인체 모션 센서. 보안, 자동 조명 등에 활용.",
+    "spec": "감지 거리: 7m / 감지 각도: 120° / 작동 전압: 3.3~5V",
+    "image": "images/products/pir-sensor.jpg",
+    "stock": 100,
+    "badge": "new"
+  },
+  {
+    "id": 7,
+    "name": "SG90 서보 모터",
+    "category": "module",
+    "price": 3500,
+    "description": "소형 서보 모터. 로봇 팔, 카메라 팬, 문 개폐 등에 사용.",
+    "spec": "토크: 1.8kg·cm(4.8V) / 속도: 0.1s/60°(4.8V) / 회전 각도: 180°",
+    "image": "images/products/sg90.jpg",
+    "stock": 120,
+    "badge": ""
+  },
+  {
+    "id": 8,
+    "name": "릴레이 모듈 4채널",
+    "category": "module",
+    "price": 7500,
+    "description": "4개의 릴레이를 제어할 수 있는 모듈. 가전기기 ON/OFF 제어에 활용.",
+    "spec": "채널: 4개 / 정격: 250VAC 10A / 작동 전압: 5V",
+    "image": "images/products/relay-4ch.jpg",
+    "stock": 60,
+    "badge": ""
+  },
+  {
+    "id": 9,
+    "name": "LCD 1602 I2C 모듈",
+    "category": "module",
+    "price": 5500,
+    "description": "16x2 LCD에 I2C 백팩이 장착되어 2핀으로 연결 가능.",
+    "spec": "화면: 16문자 x 2행 / 인터페이스: I2C / 백라이트: 블루",
+    "image": "images/products/lcd1602.jpg",
+    "stock": 90,
+    "badge": ""
+  },
+  {
+    "id": 10,
+    "name": "아두이노 스타터 키트",
+    "category": "kit",
+    "price": 65000,
+    "description": "입문자를 위한 풀 패키지. Uno 보드 + 센서 + 부품 + 메뉴얼 포함.",
+    "spec": "포함: Arduino Uno, 브레드보드, 점퍼와이어, LED, 저항, 센서 등 30종",
+    "image": "images/products/starter-kit.jpg",
+    "stock": 25,
+    "badge": "best"
+  },
+  {
+    "id": 11,
+    "name": "IoT WiFi 키트 (ESP8266)",
+    "category": "kit",
+    "price": 42000,
+    "description": "WiFi 기반 IoT 프로젝트 키트. ESP8266 NodeMCU + 센서 + 가이드 포함.",
+    "spec": "포함: ESP8266 NodeMCU, DHT11, LED, 서보모터 등 + 온라인 가이드",
+    "image": "images/products/iot-kit.jpg",
+    "stock": 20,
+    "badge": "new"
+  },
+  {
+    "id": 12,
+    "name": "점퍼와이어 세트 (60P)",
+    "category": "kit",
+    "price": 5000,
+    "description": "브레드보드 연결용 점퍼와이어 3종 세트. 각 20개씩 총 60개.",
+    "spec": "M-M: 20개 / M-F: 20개 / F-F: 20개 / 길이: 20cm",
+    "image": "images/products/jumper-wire.jpg",
+    "stock": 300,
+    "badge": ""
+  }
+]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>장바구니 - ArduinoMall</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">Arduino<span>Mall</span></a>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="상품을 검색하세요...">
+        <button onclick="handleSearch()">검색</button>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">홈</a>
+        <a href="cart.html" class="cart-link">
+          장바구니
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Cart -->
+  <main class="cart-page">
+    <h1>장바구니</h1>
+    <div id="cart-items"></div>
+    <div id="cart-summary"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h3>ArduinoMall</h3>
+        <p>아두이노 & IoT 프로젝트를 위한<br>전문 부품 쇼핑몰입니다.</p>
+      </div>
+      <div>
+        <h3>고객센터</h3>
+        <p>문의: 02-1234-5678</p>
+      </div>
+      <div>
+        <h3>정보</h3>
+        <p>사업자등록번호: 123-45-67890</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 ArduinoMall. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
+  <script>
+    (function() {
+      updateCartCount();
+      renderCartPage();
+    })();
+
+    function handleSearch() {
+      const keyword = document.getElementById('search-input').value.trim();
+      if (keyword) {
+        window.location.href = `../index.html?search=${encodeURIComponent(keyword)}`;
+      }
+    }
+  </script>
+</body>
+</html>

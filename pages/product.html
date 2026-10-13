@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 상세 - ArduinoMall</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">Arduino<span>Mall</span></a>
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="상품을 검색하세요...">
+        <button onclick="handleSearch()">검색</button>
+      </div>
+      <nav class="nav">
+        <a href="../index.html">홈</a>
+        <a href="cart.html" class="cart-link">
+          장바구니
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="product-detail" id="product-detail">
+    <!-- JS로 렌더링 -->
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h3>ArduinoMall</h3>
+        <p>아두이노 & IoT 프로젝트를 위한<br>전문 부품 쇼핑몰입니다.</p>
+      </div>
+      <div>
+        <h3>고객센터</h3>
+        <p>문의: 02-1234-5678<br>이메일: help@arduinomall.kr</p>
+      </div>
+      <div>
+        <h3>정보</h3>
+        <p>사업자등록번호: 123-45-67890<br>대표: 홍길동</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 ArduinoMall. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
+  <script>
+    let quantity = 1;
+    let currentProduct = null;
+
+    (async function() {
+      await loadProducts();
+      updateCartCount();
+
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get('id'));
+      currentProduct = getProductById(id);
+
+      if (!currentProduct) {
+        document.getElementById('product-detail').innerHTML = `
+          <div style="grid-column:1/-1; text-align:center; padding:80px;">
+            <p>상품을 찾을 수 없습니다.</p>
+            <a href="../index.html" class="btn btn-primary" style="margin-top:16px; display:inline-block;">홈으로</a>
+          </div>
+        `;
+        return;
+      }
+
+      renderDetail();
+    })();
+
+    function renderDetail() {
+      const p = currentProduct;
+      const container = document.getElementById('product-detail');
+      container.innerHTML = `
+        <div class="detail-image">
+          <img src="../${p.image}" alt="${p.name}" style="width:100%;height:400px;object-fit:cover;"
+               onerror="this.outerHTML='<div style=\\'height:400px;display:flex;align-items:center;justify-content:center;font-size:64px;color:#ccc;background:#f0f0f0\\'>📦</div>'">
+        </div>
+        <div class="detail-info">
+          <div class="category-tag">${CATEGORY_MAP[p.category] || p.category}</div>
+          <h1>${p.name}</h1>
+          <div class="price">${formatPrice(p.price)}</div>
+          <p class="description">${p.description}</p>
+          <div class="spec">
+            <strong>제품 스펙:</strong><br>
+            ${p.spec}
+          </div>
+          <div class="quantity-selector">
+            <button onclick="changeQty(-1)">-</button>
+            <span id="qty-display">1</span>
+            <button onclick="changeQty(1)">+</button>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-primary" onclick="addCurrentToCart()">장바구니 담기</button>
+            <button class="btn btn-accent" onclick="buyNow()">바로 구매</button>
+          </div>
+          <p style="margin-top:16px; color:#999; font-size:13px;">
+            재고: ${p.stock}개 | 배송비: 50,000원 이상 무료
+          </p>
+        </div>
+      `;
+    }
+
+    function changeQty(delta) {
+      quantity = Math.max(1, quantity + delta);
+      document.getElementById('qty-display').textContent = quantity;
+    }
+
+    function addCurrentToCart() {
+      addToCart(currentProduct.id, currentProduct.name, currentProduct.price, quantity, '../' + currentProduct.image);
+    }
+
+    function buyNow() {
+      addToCart(currentProduct.id, currentProduct.name, currentProduct.price, quantity, '../' + currentProduct.image);
+      window.location.href = 'cart.html';
+    }
+
+    function handleSearch() {
+      const keyword = document.getElementById('search-input').value.trim();
+      if (keyword) {
+        window.location.href = `../index.html?search=${encodeURIComponent(keyword)}`;
+      }
+    }
+  </script>
+</body>
+</html>

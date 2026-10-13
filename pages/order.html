@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문/결제 - ArduinoMall</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">Arduino<span>Mall</span></a>
+      <nav class="nav">
+        <a href="../index.html">홈</a>
+        <a href="cart.html" class="cart-link">
+          장바구니
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Order Form -->
+  <main class="order-page">
+    <h1>주문/결제</h1>
+
+    <!-- 주문자 정보 -->
+    <div class="form-section">
+      <h2>주문자 정보</h2>
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" placeholder="홍길동">
+      </div>
+      <div class="form-group">
+        <label for="phone">연락처</label>
+        <input type="tel" id="phone" placeholder="010-1234-5678">
+      </div>
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" placeholder="email@example.com">
+      </div>
+    </div>
+
+    <!-- 배송 정보 -->
+    <div class="form-section">
+      <h2>배송 정보</h2>
+      <div class="form-group">
+        <label for="address">주소</label>
+        <input type="text" id="address" placeholder="서울시 강남구 테헤란로 123">
+      </div>
+      <div class="form-group">
+        <label for="detail-address">상세 주소</label>
+        <input type="text" id="detail-address" placeholder="3층 302호">
+      </div>
+      <div class="form-group">
+        <label for="memo">배송 메모</label>
+        <textarea id="memo" rows="3" placeholder="부재 시 문 앞에 놓아주세요."></textarea>
+      </div>
+    </div>
+
+    <!-- 결제 수단 -->
+    <div class="form-section">
+      <h2>결제 수단</h2>
+      <div class="form-group">
+        <select id="payment-method">
+          <option value="card">신용카드</option>
+          <option value="bank">무통장 입금</option>
+          <option value="kakao">카카오페이</option>
+          <option value="naver">네이버페이</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 주문 요약 -->
+    <div class="form-section" id="order-summary">
+      <h2>주문 상품</h2>
+      <!-- JS로 렌더링 -->
+    </div>
+
+    <!-- 주문 버튼 -->
+    <div style="text-align:center; margin:32px 0;">
+      <button class="btn btn-accent" style="width:100%; max-width:400px; padding:16px; font-size:18px;" onclick="submitOrder()">
+        주문 완료하기
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      &copy; 2026 ArduinoMall. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/cart.js"></script>
+  <script>
+    (function() {
+      updateCartCount();
+      renderOrderSummary();
+    })();
+
+    function renderOrderSummary() {
+      const container = document.getElementById('order-summary');
+      const cart = getCart();
+      const total = getCartTotal();
+      const shipping = total >= 50000 ? 0 : 3000;
+
+      container.innerHTML = `
+        <h2>주문 상품</h2>
+        ${cart.map(item => `
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #eee;">
+            <span>${item.name} x ${item.quantity}</span>
+            <span>${formatPrice(item.price * item.quantity)}</span>
+          </div>
+        `).join('')}
+        <div style="display:flex; justify-content:space-between; padding:12px 0; font-size:18px; font-weight:700;">
+          <span>총 결제금액</span>
+          <span style="color:var(--accent)">${formatPrice(total + shipping)}</span>
+        </div>
+      `;
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const detailAddress = document.getElementById('detail-address').value.trim();
+      const memo = document.getElementById('memo').value.trim();
+      const paymentMethod = document.getElementById('payment-method').value;
+
+      if (!name || !phone || !address) {
+        alert('이름, 연락처, 주소를 모두 입력해주세요.');
+        return;
+      }
+
+      if (getCart().length === 0) {
+        alert('장바구니가 비어있습니다.');
+        return;
+      }
+
+      const orderId = 'ORD-' + Date.now();
+      const order = {
+        order_no: orderId,
+        customer_name: name,
+        customer_phone: phone,
+        customer_email: email,
+        address: address,
+        address_detail: detailAddress,
+        memo: memo,
+        payment_method: paymentMethod,
+        total_amount: getCartTotal(),
+        status: 'pending'
+      };
+
+      // Supabase 시도 → 실패 시 localStorage
+      (async function() {
+        try {
+          const mod = await import('../js/supabase-client.js').catch(() => null);
+          const config = await import('../js/config.js').catch(() => ({}));
+          if (mod && config.SUPABASE_URL && !config.SUPABASE_URL.includes('YOUR_PROJECT')) {
+            await mod.createOrder(order, getCart());
+          } else {
+            const orders = JSON.parse(localStorage.getItem('arduino_orders') || '[]');
+            orders.push({ ...order, id: Date.now(), items: getCart() });
+            localStorage.setItem('arduino_orders', JSON.stringify(orders));
+          }
+        } catch (e) {
+          const orders = JSON.parse(localStorage.getItem('arduino_orders') || '[]');
+          orders.push({ ...order, id: Date.now(), items: getCart() });
+          localStorage.setItem('arduino_orders', JSON.stringify(orders));
+        }
+        clearCart();
+        window.location.href = `order-complete.html?orderId=${orderId}`;
+      })();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문 완료 - ArduinoMall</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">Arduino<span>Mall</span></a>
+      <nav class="nav">
+        <a href="../index.html">홈</a>
+        <a href="cart.html" class="cart-link">
+          장바구니
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Order Complete -->
+  <main class="order-complete">
+    <div class="check-icon">✓</div>
+    <h1>주문이 완료되었습니다!</h1>
+    <p>
+      주문이 정상적으로 접수되었습니다.<br>
+      배송 준비 후 출고 안내를 드리겠습니다.
+    </p>
+
+    <div style="background:#f9f9f9; padding:20px; border-radius:8px; margin:24px 0; text-align:left;">
+      <p><strong>주문번호:</strong> <span id="order-id">-</span></p>
+      <p><strong>주문일시:</strong> <span id="order-date">-</span></p>
+    </div>
+
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:32px;">
+      <a href="../index.html" class="btn btn-primary">홈으로 돌아가기</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      &copy; 2026 ArduinoMall. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId') || '-';
+
+      document.getElementById('order-id').textContent = orderId;
+      document.getElementById('order-date').textContent = new Date().toLocaleString('ko-KR');
+
+      // 헤더 카운트 초기화
+      const countEl = document.getElementById('cart-count');
+      if (countEl) countEl.style.display = 'none';
+    })();
+  </script>
+</body>
+</html>
